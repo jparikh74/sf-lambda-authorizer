@@ -1,14 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-adoptopenjdk-11' 
-            args '-v /root/.m2:/root/.m2' 
-        }
-    }
+    agent any
     stages {
-        stage('Build') { 
+        stage('List production S3 buckets') {
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                withMaven {
+                    sh "mvn install -Dmaven.test.skip=true"
+                }
             }
         }
     }
